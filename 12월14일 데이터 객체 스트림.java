@@ -1,39 +1,39 @@
-package test.byteio;
+ï»¿package test.byteio;
 import java.io.*;
 public class TestDataIO {
 	public void fileSave() {
-		//DataOutputStream Å¬·¡½º´Â °ªÀ» Á¾·ùº°·Î ±â·ÏÇÒ ¼ö ÀÖ´Â
-		//¸Ş¼Òµå¸¦ Á¦°øÇÏ´Â º¸Á¶½ºÆ®¸² Å¬·¡½ºÀÓ.
+		//DataOutputStream í´ë˜ìŠ¤ëŠ” ê°’ì„ ì¢…ë¥˜ë³„ë¡œ ê¸°ë¡í•  ìˆ˜ ìˆëŠ”
+		//ë©”ì†Œë“œë¥¼ ì œê³µí•˜ëŠ” ë³´ì¡°ìŠ¤íŠ¸ë¦¼ í´ë˜ìŠ¤ì„.
 		/*try (FileOutputStream fout = new FileOutputStream("member.dat");
 				DataOutputStream dout = new DataOutputStream(fout);){
 			
-		}·¹ÆÛ·±½º¸¦ °¢°¢ ¾µ ÀÏÀÌ ¾ø´Ù¸é ÇÏ³ªÀÇ ·¹ÆÛ·±½º·Î ¼±¾ğÇÒ °Í.*/
-		//ÇÑ¹ø¿¡ ¼±¾ğÇÏ¸é ±»ÀÌ À§¿¡ Ã³·³ 2°³ÀÇ ·¹ÆÛ·±½º¸¦ ¼±¾ğÇÒ ÇÊ¿ä°¡ ¾øÀ½.
+		}ë ˆí¼ëŸ°ìŠ¤ë¥¼ ê°ê° ì“¸ ì¼ì´ ì—†ë‹¤ë©´ í•˜ë‚˜ì˜ ë ˆí¼ëŸ°ìŠ¤ë¡œ ì„ ì–¸í•  ê²ƒ.*/
+		//í•œë²ˆì— ì„ ì–¸í•˜ë©´ êµ³ì´ ìœ„ì— ì²˜ëŸ¼ 2ê°œì˜ ë ˆí¼ëŸ°ìŠ¤ë¥¼ ì„ ì–¸í•  í•„ìš”ê°€ ì—†ìŒ.
 		try(DataOutputStream dout = new DataOutputStream(
 				new FileOutputStream("member.dat"))) {
-			//dout.writeUTF("È«±æµ¿"); //Data ½ºÆ®¸²Àº ±â·ÏÇÑ ¼ø¼­´ë·Î °ªÀ» ÀĞ¾î¾ß ÇÔ.
-			String name = "È«±æµ¿";
+			//dout.writeUTF("í™ê¸¸ë™"); //Data ìŠ¤íŠ¸ë¦¼ì€ ê¸°ë¡í•œ ìˆœì„œëŒ€ë¡œ ê°’ì„ ì½ì–´ì•¼ í•¨.
+			String name = "í™ê¸¸ë™";
 			int age = 27;
-			char gender = '³²';
+			char gender = 'ë‚¨';
 			double height = 178.5;
-			dout.writeUTF(name);//ÀĞÀ» ¶§ ²À UTF·Î ÀĞ¾î¾ß ÇÔ
+			dout.writeUTF(name);//ì½ì„ ë•Œ ê¼­ UTFë¡œ ì½ì–´ì•¼ í•¨
 			dout.writeInt(age);
 			dout.writeChar(gender);
 			dout.writeDouble(height);
 			dout.flush();
 			
-			System.out.println("ÆÄÀÏ¿¡ ±â·Ï ¿Ï·á.");
+			System.out.println("íŒŒì¼ì— ê¸°ë¡ ì™„ë£Œ.");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	public void fileRead() {
-		//·¹ÆÛ·±½º¸¦ °¢°¢ ¾µ ÀÏÀÌ ¾ø´Ù¸é ÇÏ³ªÀÇ ·¹ÆÛ·±½º·Î ¼±¾ğÇÒ °Í.
+		//ë ˆí¼ëŸ°ìŠ¤ë¥¼ ê°ê° ì“¸ ì¼ì´ ì—†ë‹¤ë©´ í•˜ë‚˜ì˜ ë ˆí¼ëŸ°ìŠ¤ë¡œ ì„ ì–¸í•  ê²ƒ.
 		/*try(FileInputStream fin = new FileInputStream("member.dat");
 				DataInputStream din = new DataInputStream(fin);)*/
 		try (DataInputStream din = new DataInputStream(
 				new FileInputStream("member.dat"));){
-			//²À ±â·ÏÇÑ ¼ø¼­´ë·Î ÀĞ¾î¿Í¾ß ÇÔ.
+			//ê¼­ ê¸°ë¡í•œ ìˆœì„œëŒ€ë¡œ ì½ì–´ì™€ì•¼ í•¨.
 			String name = din.readUTF();
 			int age = din.readInt();
 			char gender = din.readChar();
@@ -45,10 +45,10 @@ public class TestDataIO {
 		}
 	}
 	public static void main(String[]args) {
-		//data ÀÔÃâ·Â º¸Á¶ ½ºÆ®¸² Å×½ºÆ®
+		//data ì…ì¶œë ¥ ë³´ì¡° ìŠ¤íŠ¸ë¦¼ í…ŒìŠ¤íŠ¸
 		TestDataIO test = new TestDataIO();
 		//test.fileSave();
-		//member.dat¸¦ ¿­¾îº¸¸é Á÷Á¢ byte°ªÀÌ ³ª¿À±â ¶§¹®¿¡ °ªÀÌ ÀÌ»óÇÏ°Ô ³ª¿È
+		//member.datë¥¼ ì—´ì–´ë³´ë©´ ì§ì ‘ byteê°’ì´ ë‚˜ì˜¤ê¸° ë•Œë¬¸ì— ê°’ì´ ì´ìƒí•˜ê²Œ ë‚˜ì˜´
 		test.fileRead();
 	}
 }
@@ -57,27 +57,27 @@ package test.byteio;
 import java.io.*;
 public class TestDataIO2 {
 	public void fileSave() {
-		//try ¿·¿¡ ¼±¾ğ°ú »ı¼ºÇØ¼­ close »ı·«ÇÏÁö ¸»°í Á÷Á¢ ´Ù ÃÄº¸±â
-		//exception Á¾·ùµµ ´Ù ½áº¸±â
+		//try ì˜†ì— ì„ ì–¸ê³¼ ìƒì„±í•´ì„œ close ìƒëµí•˜ì§€ ë§ê³  ì§ì ‘ ë‹¤ ì³ë³´ê¸°
+		//exception ì¢…ë¥˜ë„ ë‹¤ ì¨ë³´ê¸°
 		FileOutputStream fout = null;
 		DataOutputStream dout = null;
 		try {
 			fout=new FileOutputStream("member.dat");
 			dout=new DataOutputStream(fout);
-			//dout.writeUTF("È«±æµ¿"); //Data ½ºÆ®¸²Àº ±â·ÏÇÑ ¼ø¼­´ë·Î °ªÀ» ÀĞ¾î¾ß ÇÔ.
-			String name = "È«±æµ¿";
+			//dout.writeUTF("í™ê¸¸ë™"); //Data ìŠ¤íŠ¸ë¦¼ì€ ê¸°ë¡í•œ ìˆœì„œëŒ€ë¡œ ê°’ì„ ì½ì–´ì•¼ í•¨.
+			String name = "í™ê¸¸ë™";
 			int age = 27;
-			char gender = '³²';
+			char gender = 'ë‚¨';
 			double height = 178.5;
-			dout.writeUTF(name);//ÀĞÀ» ¶§ ²À UTF·Î ÀĞ¾î¾ß ÇÔ
+			dout.writeUTF(name);//ì½ì„ ë•Œ ê¼­ UTFë¡œ ì½ì–´ì•¼ í•¨
 			dout.writeInt(age);
 			dout.writeChar(gender);
 			dout.writeDouble(height);
 			dout.flush();
 			
-			System.out.println("ÆÄÀÏ¿¡ ±â·Ï ¿Ï·á.");
+			System.out.println("íŒŒì¼ì— ê¸°ë¡ ì™„ë£Œ.");
 		}catch(FileNotFoundException e) {
-			System.out.println("ÆÄÀÏÀÌ ¾ø½À´Ï´Ù.");
+			System.out.println("íŒŒì¼ì´ ì—†ìŠµë‹ˆë‹¤.");
 		}catch(IOException e) {	e.printStackTrace();
 		}catch (Exception e) {	e.printStackTrace();
 		}finally {
@@ -95,7 +95,7 @@ public class TestDataIO2 {
 		try {
 			fin = new FileInputStream("test.dat");
 			din = new DataInputStream(fin);
-			//²À ±â·ÏÇÑ ¼ø¼­´ë·Î ÀĞ¾î¿Í¾ß ÇÔ.
+			//ê¼­ ê¸°ë¡í•œ ìˆœì„œëŒ€ë¡œ ì½ì–´ì™€ì•¼ í•¨.
 			String name = din.readUTF();
 			int age = din.readInt();
 			char gender = din.readChar();
@@ -103,7 +103,7 @@ public class TestDataIO2 {
 			
 			System.out.println(name + ", "+age +", "+gender+", "+height);
 		}catch(FileNotFoundException e) {
-			System.out.println("ÆÄÀÏÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+			System.out.println("íŒŒì¼ì´ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 		}catch(IOException e) {
 			e.printStackTrace();
 		}catch (Exception e) {
@@ -130,11 +130,11 @@ package test.byteio;
 import java.io.*;
 public class TestObjectIO {
 	public void fileSave() {
-		//ÆÄÀÏ ±â·Ï¿¡ »ç¿ëÇÒ °´Ã¼¹è¿­ ÁØºñ
+		//íŒŒì¼ ê¸°ë¡ì— ì‚¬ìš©í•  ê°ì²´ë°°ì—´ ì¤€ë¹„
 		Student[] sar = {
-				new Student(12, "È«±æµ¿",4.43,"°æ¿µÇĞ°ú"),
-				new Student(25, "ÀÌ¼ø½Å",4.5,"Ã¼À°ÇĞ°ú"),
-				new Student(37, "Àå¿µ½Ç", 3.87,"Á¤º¸Åë½ÅÇĞ°ú")
+				new Student(12, "í™ê¸¸ë™",4.43,"ê²½ì˜í•™ê³¼"),
+				new Student(25, "ì´ìˆœì‹ ",4.5,"ì²´ìœ¡í•™ê³¼"),
+				new Student(37, "ì¥ì˜ì‹¤", 3.87,"ì •ë³´í†µì‹ í•™ê³¼")
 		};
 		
 		try(ObjectOutputStream objOut = new ObjectOutputStream(
@@ -142,7 +142,7 @@ public class TestObjectIO {
 			for(int i=0; i<sar.length;i++) {
 				objOut.writeObject(sar[i]);
 			}
-			System.out.println("ÆÄÀÏ ±â·Ï ¿Ï·á.");
+			System.out.println("íŒŒì¼ ê¸°ë¡ ì™„ë£Œ.");
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -150,30 +150,30 @@ public class TestObjectIO {
 	
 	public void fileRead() {
 		int count = 0;
-		//¹è¿­°ø°£Àº ¸ğÀÚ¸£¸é ¾ÈµÇ±â ¶§¹®¿¡ ³Ë³ËÈ÷ ¼±¾ğ
+		//ë°°ì—´ê³µê°„ì€ ëª¨ìë¥´ë©´ ì•ˆë˜ê¸° ë•Œë¬¸ì— ë„‰ë„‰íˆ ì„ ì–¸
 		Student[] sar = new Student[10];
 		try(ObjectInputStream objIn = new ObjectInputStream(
 				new FileInputStream("student.dat"))){
 			while(true) {
 				/*Student std = (Student)objIn.readObject();
-				//Object°¡ »óÀ§ Å¬·¡½ºÀÌ±â ¶§¹®¿¡ ´Ù¿îÄ³½ºÆÃ*/
-				//À§¿Í°°ÀÌ ÇÒ ÇÊ¿ä ¾øÀÌ ¾Æ·¡Ã³·³ ÇÑ ¹®ÀåÀ¸·Î ¼±¾ğ
+				//Objectê°€ ìƒìœ„ í´ë˜ìŠ¤ì´ê¸° ë•Œë¬¸ì— ë‹¤ìš´ìºìŠ¤íŒ…*/
+				//ìœ„ì™€ê°™ì´ í•  í•„ìš” ì—†ì´ ì•„ë˜ì²˜ëŸ¼ í•œ ë¬¸ì¥ìœ¼ë¡œ ì„ ì–¸
 				sar[count] = (Student)objIn.readObject();
 				count++;
 			}
 		}catch(EOFException e) {
-			System.out.println("ÆÄÀÏ ÀĞ±â ¿Ï·á");
+			System.out.println("íŒŒì¼ ì½ê¸° ì™„ë£Œ");
 			for(int i=0; i<count;i++) {
-				System.out.println(sar[i]); //toString¿À¹ö¶óÀÌµù
+				System.out.println(sar[i]); //toStringì˜¤ë²„ë¼ì´ë”©
 			}
 		}catch(Exception e) {
-			//System.out.println("ÆÄÀÏ ÀĞ±â ¿Ï·á.");
-			//->EOFException¹ß»ı °í·Î catch¹® ÀÛ¼º
+			//System.out.println("íŒŒì¼ ì½ê¸° ì™„ë£Œ.");
+			//->EOFExceptionë°œìƒ ê³ ë¡œ catchë¬¸ ì‘ì„±
 			e.printStackTrace();
 		}
 	}
 	public static void main(String[] args) {
-		// °´Ã¼ÀÔÃâ·Â Å×½ºÆ®
+		// ê°ì²´ì…ì¶œë ¥ í…ŒìŠ¤íŠ¸
 		TestObjectIO test = new TestObjectIO();
 		test.fileSave();
 		test.fileRead();
@@ -195,13 +195,13 @@ public class SungjukProcess {
 		try(DataOutputStream dout = new DataOutputStream(
 				new FileOutputStream("score.dat"));) {
 			do{
-				System.out.print("±¹¾î Á¡¼ö ÀÔ·Â : ");
+				System.out.print("êµ­ì–´ ì ìˆ˜ ì…ë ¥ : ");
 				int kor = sc.nextInt();
 				dout.writeInt(kor);
-				System.out.print("¿µ¾î Á¡¼ö ÀÔ·Â : ");
+				System.out.print("ì˜ì–´ ì ìˆ˜ ì…ë ¥ : ");
 				int eng = sc.nextInt();
 				dout.writeInt(eng);
-				System.out.print("¼öÇĞ Á¡¼ö ÀÔ·Â : ");
+				System.out.print("ìˆ˜í•™ ì ìˆ˜ ì…ë ¥ : ");
 				int ma = sc.nextInt();
 				dout.writeInt(ma);
 				
@@ -209,18 +209,18 @@ public class SungjukProcess {
 				dout.writeInt(sum);
 				double avg = (kor+eng+ma)/3;
 				dout.writeDouble(avg);
-				System.out.print("°è¼Ó ÀúÀåÇÏ½Ã°Ú½À´Ï±î?(y/n) : ");
+				System.out.print("ê³„ì† ì €ì¥í•˜ì‹œê² ìŠµë‹ˆê¹Œ?(y/n) : ");
 			}while(sc.next().toUpperCase().charAt(0) == 'Y');
-			System.out.println("score.dat¿¡ ÀúÀå ¿Ï·á.");
+			System.out.println("score.datì— ì €ì¥ ì™„ë£Œ.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public void scoreRead() {
-		/*FileInputStream¿¡ readDouble() the next eight bytes of this input stream, interpreted as a double.
+		/*FileInputStreamì— readDouble() the next eight bytes of this input stream, interpreted as a double.
 		 * EOFException - if this input stream reaches the end before reading eight bytes.
-		 * ¸¶Áö¸·À¸·Î ÀÔ·Â¹ŞÀº double°ª¿¡ EOFException(°ªÀÌ ¾øÀ»¶§)ÀÌ ¹ß»ıÇÏ¸é ¹İº¹¹® Á¾·á
+		 * ë§ˆì§€ë§‰ìœ¼ë¡œ ì…ë ¥ë°›ì€ doubleê°’ì— EOFException(ê°’ì´ ì—†ì„ë•Œ)ì´ ë°œìƒí•˜ë©´ ë°˜ë³µë¬¸ ì¢…ë£Œ
 		 */
 		int count = 0;
 		int totalSum=0;
@@ -237,15 +237,15 @@ public class SungjukProcess {
 						
 				//System.out.println(kor+" "+eng+" "+ma+" "+sum+" "+avg);
 				System.out.printf("%5d%5d%5d%5d%7.2f\n", kor,eng,ma,sum,avg);
-				//printf ¼Ò¼öÁ¡ °è»ê½Ã ÀÚµ¿À¸·Î ¹İ¿Ã¸² µÊ.
+				//printf ì†Œìˆ˜ì  ê³„ì‚°ì‹œ ìë™ìœ¼ë¡œ ë°˜ì˜¬ë¦¼ ë¨.
 				totalSum +=sum;
 				totalAvg +=avg;
 				count++;
 			}while(true);
-			//System.out.println("ÀüÃ¼ÃÑÁ¡ : "+totalSum+"ÀüÃ¼ Æò±Õ : "+totalAvg+"ÀĞÀº È½¼ö : "+count);
+			//System.out.println("ì „ì²´ì´ì  : "+totalSum+"ì „ì²´ í‰ê·  : "+totalAvg+"ì½ì€ íšŸìˆ˜ : "+count);
 			
-		}catch(EOFException e) {//¸¶Áö¸·À¸·Î ÀúÀåÇÑ °ª readDouble()ÀÌ ¾øÀ» ¶§ ½ÇÇàµÇ´Â ¿¹¿Ü 
-			System.out.printf("È½¼ö : %2d ÇÕÆò±Õ : %2d Æò±ÕÀÇ ÇÕ : %2.2f\n", count,totalSum/count,totalAvg/count);
+		}catch(EOFException e) {//ë§ˆì§€ë§‰ìœ¼ë¡œ ì €ì¥í•œ ê°’ readDouble()ì´ ì—†ì„ ë•Œ ì‹¤í–‰ë˜ëŠ” ì˜ˆì™¸ 
+			System.out.printf("íšŸìˆ˜ : %2d í•©í‰ê·  : %2d í‰ê· ì˜ í•© : %2.2f\n", count,totalSum/count,totalAvg/count);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -289,7 +289,7 @@ public class Book implements Serializable{
 	public static long getSerialversionuid() {	return serialVersionUID;}
 	
 	public String toString() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy'³â'MM'¿ù'dd'ÀÏ'Ãâ°£");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy'ë…„'MM'ì›”'dd'ì¼'ì¶œê°„");
 		
 		return title+" "+author+" "+price+" "+sdf.format(dates.getTime())+" "+discountRate;
 	}
@@ -305,25 +305,25 @@ public class BookManager {
 	
 	public void fileSave() {
 		Book[] b = { //new GregorianCalendar();
-				new Book("ÀÚ¹Ù1", "±è1", 1000, new GregorianCalendar(1990,11,11), 1.1),
-				new Book("ÀÚ¹Ù2","±è2",1000, new GregorianCalendar(1990,11,12),1.1),
-				new Book("ÀÚ¹Ù3","±è3",1000, new GregorianCalendar(1990,11,12),1.1),
-				new Book("ÀÚ¹Ù4","±è4",1000, new GregorianCalendar(1990,11,12),1.1),
-				new Book("ÀÚ¹Ù5","±è5",1000, new GregorianCalendar(1990,11,12),1.1),
+				new Book("ìë°”1", "ê¹€1", 1000, new GregorianCalendar(1990,11,11), 1.1),
+				new Book("ìë°”2","ê¹€2",1000, new GregorianCalendar(1990,11,12),1.1),
+				new Book("ìë°”3","ê¹€3",1000, new GregorianCalendar(1990,11,12),1.1),
+				new Book("ìë°”4","ê¹€4",1000, new GregorianCalendar(1990,11,12),1.1),
+				new Book("ìë°”5","ê¹€5",1000, new GregorianCalendar(1990,11,12),1.1),
 		};
 		try(ObjectOutputStream objOut = new ObjectOutputStream(
 				new FileOutputStream("books.dat", true));){
-			//´ë»ó ÆÄÀÏÀÌ ¾øÀ¸¸é ÀÚµ¿À¸·Î ÆÄÀÏÀ» ¸¸µê
-			//´ë»ó ÆÄÀÏÀÌ ÀÖÀ¸¸é, ÆÄÀÏ ¾ÈÀÇ ³»¿ëÀ» Áö¿ì°í 
-			//»õ·Î¾²±â »óÅÂ·Î ÆÄÀÏÀ» ¿¬´Ù.
-			//ÆÄÀÏÃâ·Â½ºÆ®¸² »ı¼º½Ã¿¡ Ãß°¡¾²±â(append) ¸ğµå¸¦ true·Î ÇÏ¸é
-			//´ë»óÆÄÀÏÀÌ ÀÖÀ» ¶§ ±âÁ¸ ³»¿ëÀº ±×´ë·Î µÎ°í ³»¿ë µÚ¿¡ Ãß°¡¾²±â°¡ µÊ.
-			//»ı·«µÇ¸é ±âº»ÀÌ false// true¸é ÆÄÀÏ ¾ÈÀÇ ³»¿ëÀ» ³öµÎ°í °è¼Ó ¾¸
-			//°´Ã¼ Ãâ·Â ½ºÆ®¸²¿¡¼­´Â ¿À·ù ³²
+			//ëŒ€ìƒ íŒŒì¼ì´ ì—†ìœ¼ë©´ ìë™ìœ¼ë¡œ íŒŒì¼ì„ ë§Œë“¦
+			//ëŒ€ìƒ íŒŒì¼ì´ ìˆìœ¼ë©´, íŒŒì¼ ì•ˆì˜ ë‚´ìš©ì„ ì§€ìš°ê³  
+			//ìƒˆë¡œì“°ê¸° ìƒíƒœë¡œ íŒŒì¼ì„ ì—°ë‹¤.
+			//íŒŒì¼ì¶œë ¥ìŠ¤íŠ¸ë¦¼ ìƒì„±ì‹œì— ì¶”ê°€ì“°ê¸°(append) ëª¨ë“œë¥¼ trueë¡œ í•˜ë©´
+			//ëŒ€ìƒíŒŒì¼ì´ ìˆì„ ë•Œ ê¸°ì¡´ ë‚´ìš©ì€ ê·¸ëŒ€ë¡œ ë‘ê³  ë‚´ìš© ë’¤ì— ì¶”ê°€ì“°ê¸°ê°€ ë¨.
+			//ìƒëµë˜ë©´ ê¸°ë³¸ì´ false// trueë©´ íŒŒì¼ ì•ˆì˜ ë‚´ìš©ì„ ë†”ë‘ê³  ê³„ì† ì”€
+			//ê°ì²´ ì¶œë ¥ ìŠ¤íŠ¸ë¦¼ì—ì„œëŠ” ì˜¤ë¥˜ ë‚¨
 			for(int i=0; i<b.length;i++) {
 				objOut.writeObject(b[i]);
 			}
-			System.out.println("books.dat¿¡ ÀúÀå¿Ï·á!");
+			System.out.println("books.datì— ì €ì¥ì™„ë£Œ!");
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -342,7 +342,7 @@ public class BookManager {
 			for(int i=0; i<count;i++) {
 				System.out.println(bk[i]);
 			}
-			System.out.println("books.dat ÀĞ±â ¿Ï·á!");
+			System.out.println("books.dat ì½ê¸° ì™„ë£Œ!");
 		}catch (Exception e) {
 			
 			e.printStackTrace();
@@ -368,26 +368,26 @@ public class TestCFileIO1 {
 	
 	public TestCFileIO1() {}
 	
-	//¹®ÀÚ½ºÆ®¸²À¸·Î ÆÄÀÏ¿¡ ÀúÀå Ã³¸®
+	//ë¬¸ììŠ¤íŠ¸ë¦¼ìœ¼ë¡œ íŒŒì¼ì— ì €ì¥ ì²˜ë¦¬
 	public void fileSave() {
 		FileWriter fw = null;
 		
-		System.out.print("ÀúÀåÇÒ ÆÄÀÏ¸í : ");
+		System.out.print("ì €ì¥í•  íŒŒì¼ëª… : ");
 		String fileName = sc.next();
 		
 		try {
-			fw = new FileWriter(fileName,true);//´ë»óÆÄÀÏ°ú ½ºÆ®¸²(Åë·Î) »ı¼º
-			//´ë»ó ÆÄÀÏÀÌ ¾øÀ¸¸é ÆÄÀÏÀ» »õ·Î ¸¸µê
-			//´ë»ó ÆÄÀÏÀÌ ÀÖÀ¸¸é, »õ·Î¾²±â »óÅÂ·Î ¿­¸²
+			fw = new FileWriter(fileName,true);//ëŒ€ìƒíŒŒì¼ê³¼ ìŠ¤íŠ¸ë¦¼(í†µë¡œ) ìƒì„±
+			//ëŒ€ìƒ íŒŒì¼ì´ ì—†ìœ¼ë©´ íŒŒì¼ì„ ìƒˆë¡œ ë§Œë“¦
+			//ëŒ€ìƒ íŒŒì¼ì´ ìˆìœ¼ë©´, ìƒˆë¡œì“°ê¸° ìƒíƒœë¡œ ì—´ë¦¼
 			
 			fw.write('A');
 			fw.write("java program \n");
 			char[] charr = {'a','p','p','l','e'};
 			fw.write(charr);
-			fw.flush(); //½ºÆ®¸²¿¡¼­ ¿ÏÀüÈ÷ ¹Ğ¾î¹ö¸®´Â ÀÛ¾÷
-						//°¡²û ½ºÆ®¸²¿¡ ³²´Â µ¥ÀÌÅÍ°¡ ÀÖ´Âµ¥ ±×°É ´Ù ¹Ğ¾î¹ö¸²
+			fw.flush(); //ìŠ¤íŠ¸ë¦¼ì—ì„œ ì™„ì „íˆ ë°€ì–´ë²„ë¦¬ëŠ” ì‘ì—…
+						//ê°€ë” ìŠ¤íŠ¸ë¦¼ì— ë‚¨ëŠ” ë°ì´í„°ê°€ ìˆëŠ”ë° ê·¸ê±¸ ë‹¤ ë°€ì–´ë²„ë¦¼
 			
-			System.out.println("ÆÄÀÏ ±â·Ï ÀúÀå ¿Ï·á");
+			System.out.println("íŒŒì¼ ê¸°ë¡ ì €ì¥ ì™„ë£Œ");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}finally {
@@ -399,28 +399,28 @@ public class TestCFileIO1 {
 		}
 	}
 	
-	//¹®ÀÚ½ºÆ®¸²À¸·Î ÆÄÀÏ·ÎºÎÅÍ ÀĞ¾î¿Í¼­ ÄÜ¼Ö¿¡ Ãâ·Â
+	//ë¬¸ììŠ¤íŠ¸ë¦¼ìœ¼ë¡œ íŒŒì¼ë¡œë¶€í„° ì½ì–´ì™€ì„œ ì½˜ì†”ì— ì¶œë ¥
 	public void fileRead() {
 		//FileReader fr = null;
 		
-		System.out.print("ÀĞÀ» ÆÄÀÏ¸í : ");
+		System.out.print("ì½ì„ íŒŒì¼ëª… : ");
 		String fileName = sc.next();
 		
 		try(FileReader fr = new FileReader(fileName);) {
-			//¼±¾ğ°ú »ı¼ºÀÌ °°ÀÌ µé¾î°¡¾ß ÇÔ. ¿©·¯ °³¸¦ ¾µ¼ö ÀÖ±â¶§¹®¿¡;µµ °¡´É
-			//try ¿·¿¡ ÀÌ·±½ÄÀ¸·Î ÀÛ¼ºÇÏ°Ô µÇ¸é finally ¿¡ close()»ı·« °¡´É
+			//ì„ ì–¸ê³¼ ìƒì„±ì´ ê°™ì´ ë“¤ì–´ê°€ì•¼ í•¨. ì—¬ëŸ¬ ê°œë¥¼ ì“¸ìˆ˜ ìˆê¸°ë•Œë¬¸ì—;ë„ ê°€ëŠ¥
+			//try ì˜†ì— ì´ëŸ°ì‹ìœ¼ë¡œ ì‘ì„±í•˜ê²Œ ë˜ë©´ finally ì— close()ìƒëµ ê°€ëŠ¥
 			
 			//fr = new FileReader(fileName);
-			//ÆÄÀÏÀÌ ¾øÀ¸¸é ¿¡·¯ÀÓ
+			//íŒŒì¼ì´ ì—†ìœ¼ë©´ ì—ëŸ¬ì„
 			
 			int readData;
-			while((readData = fr.read()) != -1) { //read()´Â ¹®ÀÚ ÇÏ³ª¾¿ ÀĞÀ½
-				System.out.print((char)readData); //intÇüÀÌ±â ¶§¹®¿¡ Çüº¯È¯
+			while((readData = fr.read()) != -1) { //read()ëŠ” ë¬¸ì í•˜ë‚˜ì”© ì½ìŒ
+				System.out.print((char)readData); //intí˜•ì´ê¸° ë•Œë¬¸ì— í˜•ë³€í™˜
 			}
-			System.out.println("\nÆÄÀÏÀĞ±â ¿Ï·á");
+			System.out.println("\níŒŒì¼ì½ê¸° ì™„ë£Œ");
 		} catch (Exception e) { 
-			//°¢°¢ ¿¡·¯ Ã³¸®ÇÒ ³»¿ëÀÌ ÀÖÀ¸¸é °¢°¢ Exception
-			//ÇÏ³ªÀÇ ¿¡·¯¸Ş½ÃÁö¸¸ Ãâ·ÂÇÒ°Å¸é Exception ÇÏ³ª¸¸ ÀÛ¼º
+			//ê°ê° ì—ëŸ¬ ì²˜ë¦¬í•  ë‚´ìš©ì´ ìˆìœ¼ë©´ ê°ê° Exception
+			//í•˜ë‚˜ì˜ ì—ëŸ¬ë©”ì‹œì§€ë§Œ ì¶œë ¥í• ê±°ë©´ Exception í•˜ë‚˜ë§Œ ì‘ì„±
 			e.printStackTrace();
 		}/*finally {
 			try {
@@ -432,7 +432,7 @@ public class TestCFileIO1 {
 	}
 	
 	public static void main(String[] args) {
-		// ¹®ÀÚ±â¹İ ÆÄÀÏÀÔÃâ·Â Å×½ºÆ®
+		// ë¬¸ìê¸°ë°˜ íŒŒì¼ì…ì¶œë ¥ í…ŒìŠ¤íŠ¸
 		TestCFileIO1 test = new TestCFileIO1();
 		test.fileSave();
 		test.fileRead();
