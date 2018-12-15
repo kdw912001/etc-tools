@@ -1,7 +1,9 @@
-���� ��ǻ�Ϳ� ���� ���� repository�� ������ �ø����� publish�� �ؾ���. 
-�׷� �ش� repository�� other���� github.com ���� �ٲ�� Ȯ���� �� ����
-�� ������ 
+﻿먼저 컴퓨터에 새로 만든 repository를 깃허브로 올리려면 publish를 해야함. 
+그럼 해당 repository가 other에서 github.com 으로 바뀐걸 확인할 수 있음
+이 때부터 
 
-commit �� Repository-push �ؾ� ����꿡 �ö�
+commit 후 Repository-push 해야 깃허브에 올라감
 
-���ϴ� ���ϸ� commit�ϰ� ������ üũ
+원하는 파일만 commit하고 싶으면 체크
+
+파일마다 지정된 고유ID가 있으므로 파일이나 폴더 이름을 바꾸면 에러가 남
