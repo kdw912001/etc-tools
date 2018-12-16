@@ -368,7 +368,7 @@ public class TestCFileIO1 {
 	
 	public TestCFileIO1() {}
 	
-	//문자스트림으로 파일에 저장 처리
+	//문자스트림으로 파일에 저장 처리 change 확인
 	public void fileSave() {
 		FileWriter fw = null;
 		
