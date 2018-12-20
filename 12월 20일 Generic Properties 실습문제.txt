@@ -1,0 +1,693 @@
+package test.generic;
+
+import java.util.*;
+
+public class TestSetGeneric {
+
+	public HashSet<String> makeSet() {
+		HashSet<String> hset = new HashSet<String>();
+
+		hset.add("java8");
+		hset.add("oracle 11g");
+		hset.add("html5");
+		hset.add("css3");
+		// hset.add(new Date());
+		// 제네릭에 String으로 제한을 뒀으니 String클래스 외 다른 클래스 사용 불가
+
+		return hset;
+	}
+
+	public void printSet(HashSet<String> hset) {
+		Iterator<String> iter = hset.iterator();
+		while(iter.hasNext()) {
+			String s = iter.next();
+			//원래 next()의 반환형은 Object지만 제네릭 명시 했으니 String이므로
+			//형변환 할 필요가 없음
+			System.out.println(s);
+		}
+	}
+	
+	public static void main(String[] args) {
+		// Set Generic test
+		TestSetGeneric test = new TestSetGeneric();
+		HashSet<String> hs =  test.makeSet();
+		test.printSet(hs);
+	}
+}
+package test.generic;
+
+import java.util.*;
+
+public class TestListGeneric {
+
+	public ArrayList<String> makeList(){
+		ArrayList<String> list;
+		list = new ArrayList<String>();
+		
+		list.add("apple");
+		list.add("banana");
+		list.add("orange");
+		list.add("melon");
+		list.add("grape");
+		
+		
+		return list;//list를 리턴한다면 메소드의 반환자료형에 제네릭 표시
+	}
+	
+	public void printList(ArrayList<String> list) {//매개변수도 제네릭
+		/*for(int i=0; i<list.size();i++) {
+			String str = list.get(i);
+			System.out.println(str);
+			//제네릭 타입으로 안했다면 Object형이지만 제네릭 명시를 해놨으니 형변환이 필요없음.
+		}*/
+		//순번이 있는 List는 for each문 사용가능
+		for(String s:list) {
+			System.out.println(s);
+		}
+	}
+	
+	public static void main(String[] args) {
+		// List Generic test
+		TestListGeneric test = new TestListGeneric();
+		ArrayList<String> list = test.makeList();
+		//리턴값을 받아줄 때도 같은 자료형으로 받아주되 같은 제네릭 타입으로 받아줘야 함.
+		test.printList(list);
+		
+	}
+
+}
+package test.generic;
+
+import java.util.*;
+import java.util.Map.Entry;
+
+public class TestMapGeneric {
+
+	public HashMap<Integer,String> makeMap(){
+		HashMap<Integer,String> hmap = new HashMap<Integer,String>();
+		
+		hmap.put(new Integer(3), new String("java"));
+		hmap.put(5,"Servlet");//값 --> 객체
+		//Wrapper 클래스에 의해 자동 Boxing 처리됨
+		hmap.put(12,"JSP");
+		
+		return hmap;
+	}
+	
+	public void printMap(HashMap<Integer,String> hmap) {
+		Set<Integer> keys = hmap.keySet();
+		Iterator<Integer> keyIter = keys.iterator();
+		while(keyIter.hasNext()) {
+			Integer key = keyIter.next();//next()의 반환형이 Integer
+			String value = hmap.get(key); //제네릭이라 형변환 없음 
+			System.out.println(key+"="+value);
+		}
+	}
+	
+	public void printMap2(HashMap<Integer,String> hmap) {
+		Set<Map.Entry<Integer, String>>entries = hmap.entrySet();
+		//외부클래스명.내부클래스 
+		Iterator<Entry<Integer, String>> entryIter = entries.iterator();
+		
+		while(entryIter.hasNext()) {
+			Map.Entry<Integer, String> entry = entryIter.next();
+			Integer key = entry.getKey();
+			String value = entry.getValue();
+			System.out.println(key + " = " + value);
+		}
+	}
+	
+	public static void main(String[] args) {
+		// Map Generic test
+		TestMapGeneric test = new TestMapGeneric();
+		HashMap<Integer,String> hm = test.makeMap();
+		//test.printMap(hm);
+		test.printMap2(hm);
+	}
+}
+
+package make.generic;
+public class MyArray<T> { //제네릭 만들기
+	//T : type (자료형)
+	private T[] array;
+	//T객체 배열(자료형이 정해지지않은) MyArray를 사용할 때 자료형이 정해짐
+	
+	public MyArray(T[] array) {
+		this.array = array;
+	}
+	
+	public void setArray(T[] array) {
+		this.array = array;
+	}
+
+	public T[] getArray() {
+		return array;
+	}
+	
+	public void displayAll() {
+		for(T obj : array) {
+			System.out.println(obj);
+			//T 타입은 toString() 오버라이딩해야 함
+		}
+	}
+}
+package test.enclose;
+public /*static*/ class EnClose {//일반 클래스는 static사용 불가능
+	
+	//내부클래스 : 외부클래스의 멤버가 됨
+	public static class In{
+		//내부 클래스는 멤버기 때문에private, static 사용가능
+	}
+}
+package test.enclose;
+public interface Outer {
+	
+	public interface Inner{}//인터페이스 안에 인터페이스
+}
+package test.enclose;
+
+public class TestEnClose {
+
+	public static void main(String[] args) {
+		EnClose.In obj; //외부클래스명.내부클래스명
+		Outer.Inner in;//Outer.Inner 클래스를 사용하기 위해
+						//외부인터페이스명.내부인터페이스명
+	}
+
+}
+
+
+package test.properties;
+import java.io.IOException;
+import java.util.*;
+import java.io.*;
+public class TestProperties1 {
+
+	public static void main(String[] args) {
+		// Properties test
+		Properties prop = new Properties();
+
+		prop.setProperty("driver", "oracle.jdbc.driver.OracleDriver");
+		//파일에 기록 시에 값 바로 앞에 공백 있으면 안되고 키 사이에 공백 있으면 안됨
+		prop.setProperty("url", "jdbc:oracle:thin:@127.0.0.1:1521:xe");
+		prop.setProperty("user", "user007");
+		prop.setProperty("password", "pass007");
+
+		prop.list(System.out);
+		// properties에 저장된 값을 콘솔에 출력 맵은 키가 set방식으로 저장되다보니 저장순서 유지 안됨
+
+		System.out.println("=======================");
+		System.out.println(prop.getProperty("driver"));
+		System.out.println(prop.getProperty("url"));
+		System.out.println(prop.getProperty("user"));
+		System.out.println(prop.getProperty("password"));
+
+		// 파일에 기록 저장
+		try {
+			prop.store(new FileWriter("setting.txt"), "jdcb driver setting file");
+			//public void store(OutputStream out, String comments) throws IOException
+			//comments는 주석과 같은 개념(파일 설명)
+			prop.storeToXML(new FileOutputStream("setting.xml"), "jdbc oracle setting");
+			//public void storeToXML(OutputStream os, String comment) throws IOException
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+}
+#jdcb driver setting file
+#Thu Dec 20 17:50:03 KST 2018
+user=user007
+password=pass007
+url=jdbc\:oracle\:thin\:@127.0.0.1\:1521\:xe
+driver=oracle.jdbc.driver.OracleDriver
+
+
+package test.properties;
+
+import java.util.*;
+import java.io.*;
+
+public class TestProperties2 {
+
+	public static void main(String[] args) {
+		// Properties file load test
+		Properties prop1 = new Properties();
+		Properties prop2 = new Properties();
+		
+		try {
+			prop1.load(new FileReader("setting.txt"));
+			prop2.loadFromXML(new FileInputStream("setting.xml"));
+			//comment는 읽어오지 않고 "키=값"을 읽어 옴
+			prop1.list(System.out);
+			System.out.println("===========================");
+			prop2.list(System.out);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>jdbc oracle setting</comment>
+<entry key="user">user007</entry>
+<entry key="password">pass007</entry>
+<entry key="url">jdbc:oracle:thin:@127.0.0.1:1521:xe</entry>
+<entry key="driver">oracle.jdbc.driver.OracleDriver</entry>
+</properties>
+
+
+package test.properties;
+
+import java.util.*;
+import java.io.*;
+
+public class TestProperties3 {
+
+	public static void main(String[] args) {
+		//Properties file load test 2
+		Properties profile = new Properties();
+		
+		try {
+			profile.load(new FileReader("sample.txt"));
+			//txt파일이기 때문에 Reader로 읽음
+			profile.list(System.out);
+			
+			String name = profile.getProperty("name");
+			int age = Integer.parseInt(profile.getProperty("age"));
+			char gender = profile.getProperty("gender").charAt(0);
+			double height = Double.parseDouble(profile.getProperty("height"));
+			
+			System.out.println(name+", "+age+"세, "+gender+"자, "+height+" cm");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+#sample.txt
+name=홍길동
+age=25
+gender=남
+height=185.5
+
+
+package test.properties;
+
+import java.util.*;
+import java.io.*;
+
+public class TestProperties4 {
+
+	public static void main(String[] args) {
+		// Properties loop test
+		Properties prop = new Properties();
+		try {
+			prop.load(new FileReader("setting.txt"));
+			
+			Set<String> keys = prop.stringPropertyNames();//키만 따로 뺴는 메소드
+			Iterator<String> keyIter = keys.iterator();
+			while(keyIter.hasNext()) {
+				String key = keyIter.next();
+				String value = prop.getProperty(key);
+				System.out.println(key + "=" + value);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+}
+
+package practice4;
+
+public class Student implements java.io.Serializable{
+	private static final long serialVersionUID = -7684510465360553858L;
+	private int sno;
+	private String sname;
+	private int kor, eng, mat, tot, avg;
+	
+	public Student() {}
+
+	public Student(int sno, String sname, int kor, int eng, int mat, int tot, int avg) {
+		this.sno = sno;
+		this.sname = sname;
+		this.kor = kor;
+		this.eng = eng;
+		this.mat = mat;
+		this.tot = tot;
+		this.avg = avg;
+	}
+
+	public int getSno() {return sno;}
+	public void setSno(int sno) {this.sno = sno;}
+	public String getSname() {return sname;}
+	public void setSname(String sname) {this.sname = sname;}
+	public int getKor() {	return kor;}
+	public void setKor(int kor) {	this.kor = kor;}
+	public int getEng() {	return eng;}
+	public void setEng(int eng) {	this.eng = eng;}
+	public int getMat() {	return mat;}
+	public void setMat(int mat) {	this.mat = mat;}
+
+	public int getTot() {
+		return tot;
+	}
+
+	public void setTot(int tot) {
+		this.tot = tot;
+	}
+
+	public int getAvg() {
+		return avg;
+	}
+
+	public void setAvg(int avg) {
+		this.avg = avg;
+	}
+	
+	public String toString() {
+		return this.sno+" "+this.sname+" "+this.kor+" "+this.eng+" "+this.mat+" "+this.tot+" "+this.avg;
+	}
+	
+}
+
+package practice4;
+
+import java.util.*;
+import java.io.*;
+import practice4.Student;
+public class TestProperties {
+
+	public Student[] readFile() {
+		Properties prop = new Properties();
+		Student[] s= new Student[4];
+		
+		try {
+			prop.load(new FileReader("score.txt"));
+			prop.list(System.out);
+			
+			Set<String> keys = prop.stringPropertyNames();
+			Iterator<String> keyIter = keys.iterator();
+			
+			System.out.println(keys);
+		
+			for(int i=0; i<s.length;i++) {
+				s[i]=new Student();
+			}
+			int i=0;
+			String[] str;
+			while(keyIter.hasNext()) {
+				String key = keyIter.next();
+				String value = prop.getProperty(key);
+				
+				str = value.split(",");
+				int sno = Integer.parseInt(str[0]);
+				String sname = str[1];
+				int kor = Integer.parseInt(str[2]);
+				int eng = Integer.parseInt(str[3]);
+				int mat = Integer.parseInt(str[4]);
+				int tot = kor+eng+mat;
+				int avg = (kor+eng+mat)/3;
+				
+				s[i] = new Student(sno,sname,kor,eng,mat,tot,avg);
+				
+				i++;
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return s;
+	}
+	public void printConsole(Student[] sr) {
+		int korSum=0;
+		int engSum=0;
+		int matSum=0;
+		for(int i=0; i<sr.length;i++) {
+			korSum+=sr[i].getKor();
+			engSum+=sr[i].getEng();
+			matSum+=sr[i].getMat();
+		}
+		System.out.println("국어합계 : "+korSum);
+		System.out.println("영어합계 : "+engSum);
+		System.out.println("수학합계 : "+matSum);
+		System.out.println("국어평균 : "+korSum/4);
+		System.out.println("수학평균 : "+engSum/4);
+		System.out.println("수학평균 : "+matSum/4);	
+	}
+	public void saveXMLFile(Student[] sr) {
+		Properties prop = new Properties();
+		
+		for(Student s:sr)
+			prop.setProperty(String.valueOf(s.getSno()), s.toString());
+		
+		try {
+			prop.storeToXML(new FileOutputStream("student.xml"), "학생 성적 결과","UTF-8");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void main(String[] args) {
+		TestProperties test = new TestProperties();
+		test.printConsole(test.readFile());
+		test.saveXMLFile(test.readFile());
+	}
+}
+
+#score.txt
+12=12,홍길동,89,95,78
+13=13,김동욱,90,90,90
+14=14,윤석호,91,90,90
+15=15,윤선용,91,92,92
+
+package practice2;
+import java.io.*;
+public class Book implements Serializable{
+	private static final long serialVersionUID = -5031129695851210808L;
+	private String bNo;
+	private int category; //도서분류코드(1.인문/2.자연과학/3.의료/4.기타)
+	private String title;
+	private String author;
+	
+	public Book() {}
+	
+	public Book(String bNo, int category, String title, String author) {
+		super();
+		this.bNo = bNo;
+		this.category = category;
+		this.title = title;
+		this.author = author;
+	}
+
+	public String getbNo() {
+		return bNo;
+	}
+
+	public void setbNo(String bNo) {
+		this.bNo = bNo;
+	}
+
+	public int getCategory() {
+		return category;
+	}
+
+	public void setCategory(int category) {
+		this.category = category;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}	
+	
+	public String toString() {
+		return this.bNo+" "+this.category+" "+this.title+" "+this.author;
+	}
+	
+}
+
+package practice3;
+
+import java.util.Comparator;
+
+import practice2.Book;
+
+public class AscBookTitle implements Comparator {
+
+	public int compare(Object o1, Object o2) {
+		int result = 0;
+		if (o1 instanceof Book && o2 instanceof Book) {
+			Book b1 = (Book) o1;
+			Book b2 = (Book) o2;
+			if (b1.getTitle().compareTo(b2.getTitle()) > 0) {
+				result = 1;
+			} else if (b1.getTitle().compareTo(b2.getTitle()) < 0) {
+				result = -1;
+
+			}
+
+		}
+		return result;
+	}
+}
+
+package practice3;
+import java.util.*;
+import java.util.Map.Entry;
+
+import practice2.AscCategory;
+import practice2.Book;
+public class BookManagerMap {
+	HashMap booksMap; //도서번호를 키로 사용함
+	
+	public BookManagerMap() {
+		booksMap = new HashMap();
+	}
+	public BookManagerMap(HashMap booksMap) {
+//		booksMap 객체의 초기값으로 생성함->뭔말이야
+		this.booksMap=booksMap;
+	}
+	
+	public void putBook(Book book) {
+		//내가한거booksMap.put(book.getbNo(),new Book(book.getbNo(),book.getCategory(),book.getTitle(),book.getAuthor()));
+		booksMap.put(book.getbNo(), book);
+	}
+	public void removeBook(String key) {
+		booksMap.remove(key);
+	}
+	public String searchBook(String bTitle) {
+		Set bookSet = booksMap.entrySet();
+		Iterator entryIter = bookSet.iterator();
+		
+		while(entryIter.hasNext()) {
+			Object obj = entryIter.next();
+			Map.Entry entry = (Map.Entry) obj;
+			Book value = (Book) entry.getValue();
+			if(value.getTitle().equals(bTitle))
+				return (String)(entry.getKey());
+		}
+		return null;
+	}
+	public void displayAll() {
+		//내가한거System.out.println(booksMap);
+		Iterator booksIter = booksMap.keySet().iterator();
+		while(booksIter.hasNext()){
+			System.out.println(booksMap.get(booksIter.next()));
+		}
+	}
+	
+	public Book[] sortedBookMap() {
+		/*Set bookSet = booksMap.entrySet();
+		Iterator entryIter = bookSet.iterator();
+		Book[] value = new Book[booksMap.size()];
+		int index=0;
+		while(entryIter.hasNext()) {
+			Object obj = entryIter.next();
+			Map.Entry entry = (Map.Entry) obj;
+			value[index] = (Book) entry.getValue();
+			index++;
+		}
+		
+		Book tmp = null;
+		for(int i=0; i<value.length-1;i++) {
+			for(int j=i+1; j<value.length;j++) {
+				if((value[i].getTitle()).compareTo(value[j].getTitle())>0) {
+					tmp = value[i];
+					value[i]=value[j];
+					value[j]=tmp;
+				}
+			}
+		}
+		return value;*/
+		List booksList = new ArrayList(booksMap.values());
+		//values로 Collection으로 바꾼 후 new ArrayList의 생성자 이용
+		booksList.sort(new AscBookTitle());
+		
+		Book[] bar = new Book[booksList.size()];
+		booksList.toArray(bar);
+		
+		return bar;
+	}
+	public void printBokMap(Book[]br) {
+		for(Book b:br)
+			System.out.println(b);
+	}
+	public void printBook(String key) {
+		System.out.println(booksMap.get(key));
+	}
+}
+
+
+package practice3;
+
+import java.util.Scanner;
+
+import practice2.Book;
+import practice3.BookManagerMap;
+
+public class TestBookManagerMap {
+	private static Scanner sc = new Scanner(System.in);
+	public static void menu() {
+		BookManagerMap bm = new BookManagerMap();
+		do {
+			int no;
+			System.out.print("*** 도서 관리 프로그램 ***\r\n" + 
+					"\r\n" + 
+					"	1. 새 도서 추가	 실행\r\n" + 
+					"	2. 도서정보 정렬후 출력  \r\n" + 
+					"			\r\n" + 
+					"	3. 도서 삭제	 \r\n" + 
+					"	4. 도서 검색출력	  \r\n" + 
+					"			\r\n" + 
+					"	5. 전체 출력	//displayAll() 실행\r\n" + 
+					"	6. 끝내기 \n 메뉴 선택 : ");
+			no = sc.nextInt();
+			switch(no) {
+			case 1: bm.putBook(inputBook()); break;
+			case 2: bm.printBokMap(bm.sortedBookMap()); break;
+			case 3: bm.removeBook(bm.searchBook(inputBookTitle())); break;
+			case 4: bm.printBook(bm.searchBook(inputBookTitle())); break;
+			case 5: bm.displayAll(); break;
+			case 6: System.out.println("종료하였습니다."); return;
+			default : System.out.println("잘못 입력하셨습니다.");
+			}
+		}while(true);
+	}
+	public static Book inputBook() {
+		Book b = new Book();
+		System.out.print("도서번호 입력 : ");
+		b.setbNo(sc.next());
+		System.out.print("도서분류코드(1.인문/2.자연과학/3.의료/4.기타)");
+		b.setCategory(sc.nextInt());
+		System.out.print("책제목 입력 : ");
+		b.setTitle(sc.next());
+		System.out.print("저자 입력 : ");
+		b.setAuthor(sc.next());
+		return b;
+	}
+	public static String inputBookTitle() {
+		System.out.print("삭제, 또는 검색을 위한 도서 타이틀 입력 : ");
+		return sc.next();
+	}
+	public static void main(String[] args) {
+		menu();
+	}
+}
+
+
