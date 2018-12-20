@@ -1,7 +1,5 @@
 package test.generic;
-
 import java.util.*;
-
 public class TestSetGeneric {
 
 	public HashSet<String> makeSet() {
@@ -26,7 +24,6 @@ public class TestSetGeneric {
 			System.out.println(s);
 		}
 	}
-	
 	public static void main(String[] args) {
 		// Set Generic test
 		TestSetGeneric test = new TestSetGeneric();
@@ -35,9 +32,7 @@ public class TestSetGeneric {
 	}
 }
 package test.generic;
-
 import java.util.*;
-
 public class TestListGeneric {
 
 	public ArrayList<String> makeList(){
@@ -49,7 +44,6 @@ public class TestListGeneric {
 		list.add("orange");
 		list.add("melon");
 		list.add("grape");
-		
 		
 		return list;//list를 리턴한다면 메소드의 반환자료형에 제네릭 표시
 	}
@@ -72,15 +66,11 @@ public class TestListGeneric {
 		ArrayList<String> list = test.makeList();
 		//리턴값을 받아줄 때도 같은 자료형으로 받아주되 같은 제네릭 타입으로 받아줘야 함.
 		test.printList(list);
-		
 	}
-
 }
 package test.generic;
-
 import java.util.*;
 import java.util.Map.Entry;
-
 public class TestMapGeneric {
 
 	public HashMap<Integer,String> makeMap(){
@@ -116,7 +106,6 @@ public class TestMapGeneric {
 			System.out.println(key + " = " + value);
 		}
 	}
-	
 	public static void main(String[] args) {
 		// Map Generic test
 		TestMapGeneric test = new TestMapGeneric();
@@ -132,18 +121,9 @@ public class MyArray<T> { //제네릭 만들기
 	private T[] array;
 	//T객체 배열(자료형이 정해지지않은) MyArray를 사용할 때 자료형이 정해짐
 	
-	public MyArray(T[] array) {
-		this.array = array;
-	}
-	
-	public void setArray(T[] array) {
-		this.array = array;
-	}
-
-	public T[] getArray() {
-		return array;
-	}
-	
+	public MyArray(T[] array) {this.array = array;}
+	public void setArray(T[] array) {this.array = array;}
+	public T[] getArray() {return array;}
 	public void displayAll() {
 		for(T obj : array) {
 			System.out.println(obj);
@@ -153,7 +133,6 @@ public class MyArray<T> { //제네릭 만들기
 }
 package test.enclose;
 public /*static*/ class EnClose {//일반 클래스는 static사용 불가능
-	
 	//내부클래스 : 외부클래스의 멤버가 됨
 	public static class In{
 		//내부 클래스는 멤버기 때문에private, static 사용가능
@@ -161,28 +140,22 @@ public /*static*/ class EnClose {//일반 클래스는 static사용 불가능
 }
 package test.enclose;
 public interface Outer {
-	
 	public interface Inner{}//인터페이스 안에 인터페이스
 }
 package test.enclose;
-
 public class TestEnClose {
-
 	public static void main(String[] args) {
 		EnClose.In obj; //외부클래스명.내부클래스명
 		Outer.Inner in;//Outer.Inner 클래스를 사용하기 위해
 						//외부인터페이스명.내부인터페이스명
 	}
-
 }
-
 
 package test.properties;
 import java.io.IOException;
 import java.util.*;
 import java.io.*;
 public class TestProperties1 {
-
 	public static void main(String[] args) {
 		// Properties test
 		Properties prop = new Properties();
@@ -212,7 +185,6 @@ public class TestProperties1 {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 }
 #jdcb driver setting file
@@ -222,14 +194,10 @@ password=pass007
 url=jdbc\:oracle\:thin\:@127.0.0.1\:1521\:xe
 driver=oracle.jdbc.driver.OracleDriver
 
-
 package test.properties;
-
 import java.util.*;
 import java.io.*;
-
 public class TestProperties2 {
-
 	public static void main(String[] args) {
 		// Properties file load test
 		Properties prop1 = new Properties();
@@ -246,7 +214,6 @@ public class TestProperties2 {
 			e.printStackTrace();
 		}
 	}
-
 }
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
@@ -258,14 +225,10 @@ public class TestProperties2 {
 <entry key="driver">oracle.jdbc.driver.OracleDriver</entry>
 </properties>
 
-
 package test.properties;
-
 import java.util.*;
 import java.io.*;
-
 public class TestProperties3 {
-
 	public static void main(String[] args) {
 		//Properties file load test 2
 		Properties profile = new Properties();
@@ -285,7 +248,6 @@ public class TestProperties3 {
 			e.printStackTrace();
 		}
 	}
-
 }
 #sample.txt
 name=홍길동
@@ -293,14 +255,10 @@ age=25
 gender=남
 height=185.5
 
-
 package test.properties;
-
 import java.util.*;
 import java.io.*;
-
 public class TestProperties4 {
-
 	public static void main(String[] args) {
 		// Properties loop test
 		Properties prop = new Properties();
@@ -317,21 +275,16 @@ public class TestProperties4 {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
-
 }
 
 package practice4;
-
 public class Student implements java.io.Serializable{
 	private static final long serialVersionUID = -7684510465360553858L;
 	private int sno;
 	private String sname;
 	private int kor, eng, mat, tot, avg;
-	
 	public Student() {}
-
 	public Student(int sno, String sname, int kor, int eng, int mat, int tot, int avg) {
 		this.sno = sno;
 		this.sname = sname;
@@ -341,7 +294,6 @@ public class Student implements java.io.Serializable{
 		this.tot = tot;
 		this.avg = avg;
 	}
-
 	public int getSno() {return sno;}
 	public void setSno(int sno) {this.sno = sno;}
 	public String getSname() {return sname;}
@@ -352,23 +304,10 @@ public class Student implements java.io.Serializable{
 	public void setEng(int eng) {	this.eng = eng;}
 	public int getMat() {	return mat;}
 	public void setMat(int mat) {	this.mat = mat;}
-
-	public int getTot() {
-		return tot;
-	}
-
-	public void setTot(int tot) {
-		this.tot = tot;
-	}
-
-	public int getAvg() {
-		return avg;
-	}
-
-	public void setAvg(int avg) {
-		this.avg = avg;
-	}
-	
+	public int getTot() {return tot;}
+	public void setTot(int tot) {	this.tot = tot;}
+	public int getAvg() {return avg;}
+	public void setAvg(int avg) {	this.avg = avg;}
 	public String toString() {
 		return this.sno+" "+this.sname+" "+this.kor+" "+this.eng+" "+this.mat+" "+this.tot+" "+this.avg;
 	}
@@ -376,7 +315,6 @@ public class Student implements java.io.Serializable{
 }
 
 package practice4;
-
 import java.util.*;
 import java.io.*;
 import practice4.Student;
@@ -414,10 +352,8 @@ public class TestProperties {
 				int avg = (kor+eng+mat)/3;
 				
 				s[i] = new Student(sno,sname,kor,eng,mat,tot,avg);
-				
 				i++;
 			}
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -451,7 +387,6 @@ public class TestProperties {
 			e.printStackTrace();
 		}
 	}
-	
 	public static void main(String[] args) {
 		TestProperties test = new TestProperties();
 		test.printConsole(test.readFile());
@@ -473,9 +408,7 @@ public class Book implements Serializable{
 	private int category; //도서분류코드(1.인문/2.자연과학/3.의료/4.기타)
 	private String title;
 	private String author;
-	
 	public Book() {}
-	
 	public Book(String bNo, int category, String title, String author) {
 		super();
 		this.bNo = bNo;
@@ -483,53 +416,23 @@ public class Book implements Serializable{
 		this.title = title;
 		this.author = author;
 	}
-
-	public String getbNo() {
-		return bNo;
-	}
-
-	public void setbNo(String bNo) {
-		this.bNo = bNo;
-	}
-
-	public int getCategory() {
-		return category;
-	}
-
-	public void setCategory(int category) {
-		this.category = category;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(String author) {
-		this.author = author;
-	}	
-	
+	public String getbNo() {return bNo;}
+	public void setbNo(String bNo) {this.bNo = bNo;}
+	public int getCategory() {return category;}
+	public void setCategory(int category) {this.category = category;}
+	public String getTitle() {return title;}
+	public void setTitle(String title) {this.title = title;	}
+	public String getAuthor() {	return author;}
+	public void setAuthor(String author) {this.author = author;}	
 	public String toString() {
 		return this.bNo+" "+this.category+" "+this.title+" "+this.author;
 	}
-	
 }
 
 package practice3;
-
 import java.util.Comparator;
-
 import practice2.Book;
-
 public class AscBookTitle implements Comparator {
-
 	public int compare(Object o1, Object o2) {
 		int result = 0;
 		if (o1 instanceof Book && o2 instanceof Book) {
@@ -539,7 +442,6 @@ public class AscBookTitle implements Comparator {
 				result = 1;
 			} else if (b1.getTitle().compareTo(b2.getTitle()) < 0) {
 				result = -1;
-
 			}
 
 		}
@@ -550,7 +452,6 @@ public class AscBookTitle implements Comparator {
 package practice3;
 import java.util.*;
 import java.util.Map.Entry;
-
 import practice2.AscCategory;
 import practice2.Book;
 public class BookManagerMap {
@@ -591,7 +492,6 @@ public class BookManagerMap {
 			System.out.println(booksMap.get(booksIter.next()));
 		}
 	}
-	
 	public Book[] sortedBookMap() {
 		/*Set bookSet = booksMap.entrySet();
 		Iterator entryIter = bookSet.iterator();
@@ -603,7 +503,6 @@ public class BookManagerMap {
 			value[index] = (Book) entry.getValue();
 			index++;
 		}
-		
 		Book tmp = null;
 		for(int i=0; i<value.length-1;i++) {
 			for(int j=i+1; j<value.length;j++) {
@@ -637,10 +536,8 @@ public class BookManagerMap {
 package practice3;
 
 import java.util.Scanner;
-
 import practice2.Book;
 import practice3.BookManagerMap;
-
 public class TestBookManagerMap {
 	private static Scanner sc = new Scanner(System.in);
 	public static void menu() {
