@@ -1,0 +1,288 @@
+package test.thread;
+public class Number /*extends Thread*/implements Runnable {
+	public Number() {}
+	
+	@Override
+	public void run() {
+		for(int k=1; k<501;k++) {
+			System.out.println(k);
+			/*try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}*/
+		}
+	}
+}
+
+package test.thread;
+public class Star /*extends Thread*/implements Runnable{
+	//멀티스레드를 사용하려면 상속받아야함
+	//Thread 상속받지 못하면 Runnable 인터페이스 사용
+	public Star() {}
+	
+	@Override
+	public void run() {
+		for(int k = 1; k<501; k++) {
+			System.out.println("★");
+			/*try {
+				Thread.sleep(100L);
+				//0.1초간 멈추고, 다른 스레드에 실행권 넘김
+				//InterruptedException 발생
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}*/
+		}
+	}
+}
+
+package test.thread;
+public class TestThread1 {
+	public static void main(String[] args) {
+		// 멀티스레드 프로그래밍 테스트1
+		/*Star star = new Star();
+		Number number = new Number();
+		
+		Thread t1 = star;
+		Thread t2 = number;*/
+		//이걸 줄여쓰자면
+		
+		//Thread 상속 받은 경우에 사용
+		/*Thread t1 = new Star();
+		Thread t2 = new Number();*/
+		
+		//Runnable 상속받은 경우
+		//Thread 클래스의 생성자 매개변수를 Runnable로 사용할 수 있음
+		/*Runnable star = new Star();
+		Runnable number = new Number();
+		Thread t1 = new Thread(star);//매개변수에 Runnable사용
+		Thread t2 = new Thread(number);*/
+		//이걸 줄이자면
+		
+		Thread t1 = new Thread(new Star());
+		Thread t2 = new Thread(new Number());
+		
+		//각 스래드의 우선순위 확인
+		int p1 = t1.getPriority();
+		int p2 = t2.getPriority();
+		//System.out.println("t1 priority : " + p1);
+		//System.out.println("t2 priority : " + p2);
+		
+		t1.setPriority(Thread.MAX_PRIORITY);
+		t2.setPriority(Thread.MIN_PRIORITY);
+		//우선순위가 높은게 먼저 수행 됨.
+		//하지만 원하는대로 수행되지 않기 때문에 sleep 등을 이용해야 함.
+		
+		t1.start();
+		t2.start();
+	
+	}
+}
+
+package munjae1;
+public class Increment implements Runnable{
+	private int num;
+	
+	public Increment(int num) {
+		this.num=num;
+	}
+	
+	public void run() {
+		for(int i=1; i<=num; i+=2) {
+			System.out.println(i+"inc");
+			try {
+				Thread.sleep(50L);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}
+
+package munjae1;
+public class Decrement implements Runnable {
+	private int start;
+	private int end;
+	
+	public Decrement(int start, int end) {
+		this.start=start;
+		this.end=end;
+	}
+	
+	public void run() {
+		for (int i = end; i >= start; i--) {
+			System.out.println(i+"dec");
+			try {
+				Thread.sleep(100L);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}
+
+package munjae1;
+public class TestTread1 {
+	public static void main(String[] args) {
+		Thread t1 = new Thread(new Increment(50));
+		Thread t2 = new Thread(new Decrement(12,45));
+		t1.run();
+		t2.run();
+	}
+}
+
+package thread.control;
+public class Buffer {//공유객체 - 메소드 동기화를 해야 함.
+	private int number;
+	private boolean empty = true;
+	public synchronized int get() {//synchronized 동기화 처리
+		//한 스레드가 이 메소드를 사용하고 있다면 다른 스레드는 이 메소드가 끝날 때까지 기다려야 함.
+		while(empty) {
+			System.out.println("값이 없어요. 공급될 때까지 기다려 주세요...");
+			try {
+				wait();//Object의 wait()메소드 
+				//실행을 강제로 멈추기 때문에 InterruptedException 발생
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		//값이 있을 때, empty가 false임
+		empty = true; //while문에서 나와 empty false를 true로 바꿈
+		notifyAll();//기다리고 있는 모든 스레드 깨움
+		return number;
+	}
+	
+	public synchronized void put(int number) {
+		//값을 넣고 뺴는 과정일 때 동기화 처리 해야 함.
+		while(!empty) {
+			System.out.println("값이 소비될 떄까지 기다리세요...");
+			try {
+				wait();//값이 소비될 때까지 wait()
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		//값이 없다면, empty가 true이면 
+		empty = false;
+		this.number=number;
+		notifyAll(); //다시 실행상태로 // 실행하라
+	}
+}
+
+package thread.control;
+public class Consumer implements Runnable{
+	private Buffer buffer;
+	public Consumer(Buffer buffer) {
+		this.buffer=buffer;
+	}
+	@Override
+	public void run() {
+		// 10번 구동함 : buffer에서 값을 꺼냄
+		for(int k = 1; k < 11; k++) {
+			int number = buffer.get();
+			System.out.println("소비자가 "+k+"번 물건을 소비하였습니다.");
+			try {
+				Thread.sleep(100);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}
+
+package thread.control;
+public class Producer implements Runnable{
+	//Consumer 와 Producer가 같이 이용할 수 있는 공용공간 생성
+	private Buffer buffer;
+	public Producer(Buffer buffer) {
+		this.buffer=buffer;
+	}
+	@Override
+	public void run() {
+		// 10번을 정수를 공급함
+		for(int k = 1; k <11; k++) {
+			buffer.put(k);
+			System.out.println("생산자가 " + k + "번 물건을 생산하였습니다.");
+			try {
+				Thread.sleep(100); //값을 넣고 잠깐 대기 시간
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}
+
+package thread.control;
+public class TestThreadControl {
+	public static void main(String[] args) {
+		// 멀티스레드의 생산자-소비자 프로그램 테스트
+		Buffer buffer = new Buffer();
+		new Thread(new Producer(buffer)).start();
+		new Thread(new Consumer(buffer)).start();
+	}
+}
+
+package thread.synch;
+public class Account {
+	//잔액 기록용
+	private static int balance;
+	
+	public Account() {}
+	
+	//잔액 인출용(출금용) 메소드
+	public synchronized void withDraw(int money) {
+		try {
+			Thread.sleep(100);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(balance >= money)
+			balance-=money;
+	}
+	public int getBalance() {
+		return this.balance;
+	}
+	public void setBalance(int money) {
+		balance += money;
+	}
+}
+
+package thread.synch;
+public class AccountManager extends Thread{
+	private Account acc;
+	private String type;
+	
+	public AccountManager() {}
+	
+	public AccountManager(String type) {
+		this.type=type;
+	}
+	
+	@Override
+	public void run() {
+		acc = new Account();
+		acc.setBalance(1000);
+		
+		while(acc.getBalance()>0) {
+			System.out.println("잔액 : "+acc.getBalance());
+			int money = new java.util.Random().nextInt(10) * 100;
+			//0,100,200,300,400,500,600,700,800,900
+			System.out.println(type + "이 인출할 금액 : " + money);
+			acc.withDraw(money);
+			
+		}
+	}
+}
+package thread.synch;
+public class TestSynchronized {
+	public static void main(String[] args) {
+		// 동기화 테스트
+		Thread t1 = new AccountManager("인터넷뱅킹");
+		Thread t2 = new AccountManager("체크카드");
+		//멘트가 잘 안나오는데 Account에 넣으면 되겠다고 말하심
+		t1.start();
+		t2.start();
+	}
+}
