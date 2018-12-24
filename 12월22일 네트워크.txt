@@ -1,0 +1,551 @@
+﻿package test.iphost;
+import java.net.*;
+public class TestInetAddress1 {
+	public static void main(String[] args) {
+		// java.net: InetAddress class test
+		
+		//host name : domain name
+		try {
+			InetAddress neverIp = InetAddress.getByName("www.naver.com");
+			//방화벽 해제 나오면 해제 해야 함.
+			System.out.println("네이버 웹서버의 ip주소 : "+neverIp);//도메인 명/ip주소를 toString() 오버라이딩
+			System.out.println(neverIp.getHostAddress());//IP주소만 리턴가능
+			InetAddress[] googles = InetAddress.getAllByName("www.google.com");
+			//googles서버의 모든 IP주소를 조회(return이 InetAddress의 배열)
+			System.out.println("google 웹서버 갯수 : " + googles.length);
+			for(InetAddress inet : googles) {
+				System.out.println(inet.getHostAddress());//IP주소만
+			}
+			
+			InetAddress[] navers = InetAddress.getAllByName("www.naver.com");
+			System.out.println("naver 웹 서버 갯수  : "+navers.length);
+			for(InetAddress inet : navers) {
+				System.out.println(inet.getHostAddress());
+			}
+			
+			InetAddress myIp = InetAddress.getLocalHost();//내 컴퓨터의 IP주소 조회 메소드(static)
+			System.out.println("내 컴퓨터 ip주소 : "+myIp.getHostAddress());
+			 
+		} catch (UnknownHostException e) {
+			System.out.println("도메인 명이 틀렸습니다.");
+			//기본 도메인 주소는 영문만 가능. 우리말 주소는 영문을 한글로 변환한 것임.
+			System.out.println("확인하고 다시 실행하세요.");
+		}
+	}
+}
+package test.iphost;
+import java.net.*;
+public class TestInetAddress2 {
+	public static void main(String[] args) throws UnknownHostException {
+		// ip주소로 호스트명 알아내기
+		byte[] naverIP = { 125, (byte) 209, (byte) 222, (byte) 141 };
+		// byte범위는 127까지이므로 형변환 해야 함.
+		
+		InetAddress naverInet = InetAddress.getByAddress(naverIP);
+		System.out.println("알아본 호스트명 : "+naverInet.getHostName());
+		//Host명을 안 갖고 만든 객체기 때문에 IP주소만 나옴
+		
+		System.out.println("host name : "+naverInet.getCanonicalHostName());
+		System.out.println("toString() : "+naverInet.toString());
+		//IP주소 자체가 호스트명으로 나옴(직접 byte배열로 처리했기 때문)
+	}
+}
+
+package test.iphost;
+import java.net.*;
+import java.util.*;
+public class TestInetAddress3 {
+	public static void searchIP() {
+		Scanner sc = new Scanner(System.in);
+		System.out.print("조회할 호스트명 : ");
+		String domain = sc.next();
+		try {
+			InetAddress[] inet = InetAddress.getAllByName(domain);
+			System.out.println("조회한 호스트의 서버 갯수 : "+inet.length);
+			for(InetAddress inet1 : inet) {
+				System.out.println(inet1);//toString()오버라이딩
+			}
+		} catch (UnknownHostException e) {
+			System.out.println("도메인 명이 틀렸습니다.");
+		}
+	}
+	public static void main(String[] args) {
+		// 키보드로 도메인명을 입력받아
+		// 해당 호스트 서버의 모든 IP주소 조회
+		// 조회된 ip주소와 호스트명 출력 처리
+		searchIP();
+	}
+}
+package test.iphost;
+import java.util.*;
+import java.net.*;
+public class TestInetAddress4 {
+
+	public static void searchIP() {
+		// 키보드로 호스트 명을 입력받아
+		// 해당 호스트가 가진 ip주소 모두 출력
+		// 모두 출력 처리 반복실행함 "none"입력시 종료되게 함
+		Scanner sc = new Scanner(System.in);
+		String domain = null;
+		System.out.print("조회할 호스트명 입력 : ");
+		while (!(domain = sc.next()).equals("none")) {
+			try {
+				InetAddress[] inet = InetAddress.getAllByName(domain);
+				System.out.println(domain+"의 웹 서버 갯수 : "+inet.length);
+				for(InetAddress i : inet) {
+					System.out.println(i.getHostAddress());
+				}
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
+			System.out.print("조회할 호스트명 입력 : ");
+		}
+	}
+	public static void main(String[] args) {
+		searchIP();
+	}
+}
+package test.url;
+import java.net.*;
+public class TestURL {
+	public static void main(String[] args) {
+		// java.net.URL class test
+		// URL 객체는 url 정보를 가지고 있음
+		String urlStr = "https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html";
+		
+		try {
+			URL url = new URL(urlStr);
+			System.out.println("프로토콜 : "+url.getProtocol());//https
+			System.out.println("호스트명 : "+url.getHost());
+			System.out.println("경로정보 : "+url.getPath());//호스트명 뒷 부분
+			System.out.println("연결된 파일 : "+url.getFile());//경로정보가 포함 됨
+			System.out.println("포트번호 : "+url.getPort());
+			//보통 사이트에서 포트번호 조회 못하게 막아놨기 때문에 -1(접속실패)이 출력됨
+			System.out.println("쿼리스트링 : "+url.getQuery());//없으니 null
+			System.out.println("참조이름 : "+url.getRef());//url에 #기호가 있는 것, 없으면 null
+			
+			String host = url.getHost();
+			InetAddress[] ipes = InetAddress.getAllByName(host);
+			for(InetAddress inet : ipes)
+				System.out.println(inet.toString());
+			
+		} catch (MalformedURLException | UnknownHostException e) {//URL에 오타가 있을 때 나는 예외
+			//같은 상속레벨(형제지간) 이면 비트OR연산자(|)를 이용
+			System.out.println("잘못된 url입니다.");
+		}
+	}
+}
+
+package test.url;
+import java.net.*;
+import java.io.*;
+public class TestURLReading {
+	public static void main(String[] args) {
+		// url의 파일을 읽어와서 콘솔에 출력
+		String urlStr = "https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html";
+		BufferedReader br = null;
+		
+		//Input스트림으로 읽으면 int로 읽기 때문에 보조 스트림(Buffer) 이용
+		try {
+			URL url = new URL(urlStr);
+			br = new BufferedReader(new InputStreamReader(url.openStream()));
+			//url.openStream 리턴 값이 InputStream
+			
+			int lineNumber = 1;//읽을 때마다 줄번호
+			String lineStr = null;
+			while((lineStr = br.readLine()) !=null) {//readLine이 다 읽으면 null리턴
+				System.out.println(lineNumber++ + " : "+lineStr);//lineNumber는 먼저 출력하고 1증가
+			}
+			System.out.println("================================");
+			URLConnection uc = url.openConnection();//URLConnection객체 생성
+			System.out.println("file : "+url.getFile());//파일 경로
+			System.out.println("length : "+uc.getContentLength());//파일의 용량 -1로출력(대상 웹사이트에서 차단)
+			System.out.println("type : "+uc.getContentType());//컨텐츠타입조회
+			System.out.println("encoding : "+uc.getContentEncoding());//UTF-8일 경우 null
+		} catch (IOException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				br.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+}
+
+package test.tcp;
+import java.net.*;
+import java.io.*;
+public class TCPServer {
+	public static void serverStart() {
+		// 1. port 번호 정하기
+		int port = 7778;// 포트번호 2000번 안 쪽은 공인된 포트번호
+		ServerSocket server = null;
+		BufferedReader br = null;
+		PrintWriter pw = null;//System.out 과 동일 println사용가능
+
+		try {
+			// 2. 서버용 소켓 객체 만들기
+			server = new ServerSocket(port);
+			
+			// 3. 클라이언트로부터 연결 요청을 기다림.
+			while(true) {
+				System.out.println("클라이언트 요청을 기다리고 있습니다....");
+				
+				//4. 연결 요청한 클라이언트의 요청을 수락함
+				//해당 클라이언트의 정보를 저장한 소켓 객체
+				Socket client = server.accept();
+				System.out.println(client.getInetAddress().getHostAddress()+"가 연결 요청함");
+				
+				//5. 해당 클라이언트의 입출력 스트림 생성함
+				//네트워크 입출력은 기본이 바이트스트림
+				InputStream is = client.getInputStream();
+				OutputStream os = client.getOutputStream();
+				
+				//성능 또는 사용 개선을 위해 보조스트림을 추가로 연결할 수도 있음
+				//바이트스트림을 문자스트림으로 바꿀 수도 있음
+				br = new BufferedReader(new InputStreamReader(is));
+				//바이트 스트림을 문자 스트림으로 바꿔줌
+				
+				pw = new PrintWriter(os);
+				
+				//6. 메세지를 주고 받음.
+				//클라이언트가 보낸 메세지 읽어서 출력
+				String message = br.readLine();
+				System.out.println("받은 메세지 : "+message);
+				//서버가 답을 보냄
+				pw.println("서버가 메세지 잘 받았음...");
+				pw.flush();
+				
+				//7. 스트림 반납함
+				pw.close();
+				br.close();
+				client.close();
+			}//while
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				server.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+
+	public static void main(String[] args) {
+		// TCP Server 즉 프로그램
+		serverStart();
+	}
+}
+
+package test.tcp;
+import java.net.*;
+import java.io.*;
+public class TCPClient {
+	public static void clientStart() {
+		// 1. 서버가 정한 포트번호와 서버의 ip주소가 필요함
+		int port = 7778;// 서버측 port와 동일
+		BufferedReader br = null;
+		PrintWriter pw = null;
+		Socket socket = null;
+		try {
+			String serverIP = InetAddress.getLocalHost().getHostAddress();
+			// String serverIP = "192.168.30.70";//직접 입력해도됨
+
+			// 2. 클라이언트 자신의 소켓 객체 생성
+			socket = new Socket(serverIP, port);
+			// 객체 생성과 동시에 서버와 연결됨.
+			// 오른쪽 아래에 open console-new console view로
+			// 하나는 서버 console 다른 하나는 client console
+			//서버 실행 이후 클라이언트
+			//Display selected console-원하는 콘솔 창 선택 하여 서버와 클라이언트 확인
+
+			// 서버와 연결 실패시 null 리턴됨.
+			if (socket != null) {// 서버와 연결이 되었다면
+				// 3. 서버와 클라이언트 간의 스트림 생성
+
+				br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				pw = new PrintWriter(socket.getOutputStream());
+
+				//4. 메세지 주고 받기
+				//서버로 먼저 보내고 
+				pw.println("안녕하세요...");
+				pw.flush();
+				
+				//답 받기
+				String recieveMsg = br.readLine();
+				System.out.println("서버가 보낸 답 : "+recieveMsg);
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				pw.close();
+				br.close();
+				socket.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	public static void main(String[] args) {
+		// TCP Client 측 프로그램
+		clientStart();
+	}
+}
+
+package silsub1;
+import java.io.*;
+import java.net.*;
+public class TCPServer {
+	public static void serverStart() {
+		// 1.포트 번호 정하기
+		int port = 7779;
+		ServerSocket server = null;
+		BufferedReader br = null;
+		PrintWriter pw = null;
+
+		try {
+			// 2. 서버용 소켓 객체 만들기
+			server = new ServerSocket(port);
+
+			// 3. 클라이언트로부터 연결 요청 기다림
+
+			while (true) {
+				System.out.println("클라이언트 요청을 기다리고 있습니다.");
+				// 4. 연결 요청한 클라이언트의 요청을 수락함
+				// 해당 클라이언트의 정보를 저장한 소켓 객체
+				Socket client = server.accept();
+				System.out.println(client.getInetAddress().getHostName() + "가 연결 요청합니다.");
+
+				// 5.해당 클라이언트의 입출력 스트림 생성함
+				// 네트워크 입출력은 기본이 바이트스트림
+				InputStream is = client.getInputStream();
+				OutputStream os = client.getOutputStream();
+
+				// 성능 또는 사용 개선을 위해 보조스트림을 추가로 연결
+				// 바이트 스트림을 문자스트림으로 바꿀 수 있음
+				br = new BufferedReader(new InputStreamReader(is));
+				pw = new PrintWriter(os);
+				// 6. 메세지를 주고 받음.
+				// 클라이언트가 보낸 메세지 읽어서 출력
+				String message = null;
+				while (!(message = br.readLine()).equals("quit")) {
+					System.out.println("받은 메세지 : " + message);
+					// 서버가 답을 보냄
+					pw.println("서버가 메세지 잘 받았음...");
+					pw.flush();
+				}
+
+				// 7.스트림 반납
+				pw.close();
+				br.close();
+				client.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				server.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+
+	}
+	public static void main(String[] args) {
+		serverStart();
+	}
+}
+package silsub1;
+import java.io.*;
+import java.net.*;
+import java.util.*;
+public class TCPClient {
+	public static void main(String[] args) {
+		clientStart();
+	}
+	
+	public static void clientStart() {
+		//1.서버가 정한 포트번호와 서버의ip주소가 필요함
+		int port = 7779; //서버 측과 동일
+		BufferedReader br = null;
+		PrintWriter pw = null;
+		Socket socket = null;
+		Scanner sc =  new Scanner(System.in);
+		try {
+			String serverIP = InetAddress.getLocalHost().getHostAddress();
+			//String serverIP 입력
+			
+			//2. 클라이언트 자신의 소켓 객체 생성
+			socket = new Socket(serverIP, port);
+			
+			//객체 생성과 동시에 서버 연결됨
+			//서버 연결 실패 시 null 리턴됨.
+			if(socket!=null) {//서버와 연결이 되었따면
+				//3.서버와 클라이언트 간의 스트림 생성
+				br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				pw = new PrintWriter(socket.getOutputStream());
+				//4. 메세지 주고 받기
+				String line = null;
+				while(true) {
+					System.out.print("메세지 입력 : ");
+					line=sc.nextLine();
+					pw.println(line);
+					pw.flush();
+
+					if(line.equals("quit")) break;
+					
+					//답 받기
+					String recieveMsg = br.readLine();
+					System.out.println("서버가 보낸 답 : "+recieveMsg);
+				}
+				
+			}			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				pw.close();
+				br.close();
+				socket.close();
+				
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+}
+
+﻿package tcp.server;
+import java.net.*;
+import java.io.*;
+public class ChattServer {
+	public static void main(String[] args) {
+		// 서버용 프로그램
+		chattServerStart();		
+	}
+	
+	private static void chattServerStart() {
+		int port = 9000;
+		String serverIP = null;
+		ServerSocket server = null;
+
+		try {
+			server = new ServerSocket(port);
+			serverIP = server.getInetAddress().getHostAddress();
+
+			while (true) { // 계속 대기상태로 만듦
+				System.out.println("접속 대기 상태...");
+				clientAccess(server);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void clientAccess(ServerSocket server) {
+		String serverIP = server.getInetAddress().getHostAddress();
+		try {
+			Socket client = server.accept();
+			String clientIP = client.getInetAddress().getHostAddress();
+			System.out.println(clientIP + " : connected...");
+
+			BufferedReader br = new BufferedReader(new InputStreamReader(client.getInputStream()));
+			PrintWriter pw = new PrintWriter(client.getOutputStream());
+
+			try {
+				String recieveMessage;
+				while (!(recieveMessage = br.readLine()).equals("quit")) {
+					System.out.println(clientIP + " : " + recieveMessage);
+					pw.println(serverIP + " : recieve success...");
+					pw.flush();
+				}
+				// quit 전송으로 정상적인 종료시
+				pw.print(serverIP + " : disconnected...");
+				pw.flush();
+				System.out.println(clientIP + " : quited....");
+				br.close();
+				pw.close();
+				client.close();
+
+			} catch (SocketException e) {
+				// quit 전송하지 않고 비정상적으로 종료한 경우
+				System.out.println(clientIP + " : 비정상적으로 종료하였음...");
+				pw.print(serverIP + " : disconnected...");
+				br.close();
+				pw.close();
+				client.close();
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+package tcp.client;
+import java.util.*;
+import java.net.*;
+import java.io.*;
+public class ChattClient {
+	public static void main(String[] args) {
+		// 클라이언트용 프로그램
+		chattClientStart();
+	}
+	private static void chattClientStart() {
+		Scanner sc = new Scanner(System.in);
+		BufferedReader br = null;
+		PrintWriter pw = null;
+
+		try {
+			Socket socket = new Socket("127.0.0.1", 9000);
+			// 객체가 생성되면 자동으로 서버와 연결됨
+
+			// 스트림 생성하고, 입출력 처리함
+			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			pw = new PrintWriter(socket.getOutputStream());
+
+			do {
+				System.out.print("전송할 메세지 : ");
+				String sendMessage = sc.nextLine();
+				// sc.nextLine();
+
+				pw.println(sendMessage);
+				pw.flush();
+				System.out.println(br.readLine());
+
+				if (sendMessage.equals("quit")) {
+					br.close();
+					pw.close();
+					socket.close();
+					break;
+				}
+
+			} while (true);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (br != null && pw != null) {
+					br.close();
+					pw.close();
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+}
