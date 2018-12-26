@@ -1,0 +1,539 @@
+package test.udp;
+
+import java.net.*;
+import java.io.*;
+
+public class TestUDPClient {
+//서버에서 메세지를 client로 전송함 
+	public static void udpReciever() throws IOException {
+		//1.데이터를 받기 위한 byte[] 준비
+		byte[] recieveMsg = new byte[1024];
+		
+		//2.소켓과 패킷 객체 생성(연결을 위한)
+		DatagramSocket uclient = new DatagramSocket(5555);
+		DatagramPacket packet = new DatagramPacket(recieveMsg,1024);
+	
+		//3.데이터 받기
+		uclient.receive(packet);
+		
+		//4. 받은 데이터 출력 확인
+		String message = new String(recieveMsg);//바이트 배열을 String으로 변환
+		System.out.println("받은 메세지 : "+message);
+		
+		//5.소켓닫기
+		uclient.close();
+	
+	}
+	
+	public static void main(String[] args) throws IOException {
+		// udp 데이터 받는 프로그램
+		System.out.println("udpReciever run.....");
+		udpReciever();
+
+	}
+	
+
+}
+package test.udp;
+
+import java.net.*;
+import java.io.*;
+
+public class TestUDPServer {
+//TCP와 달리 보내기만 하고 끝 연결확인 안 함
+	public static void udpSender() throws IOException {
+		//1. port 번호 저장
+		int port = 5555;
+		
+		//2. DatagramSocket 객체 생성함
+		DatagramSocket userver = new DatagramSocket();//SocketException 
+		
+		//3. 데이터를 받을 클라이언트 주소 지정
+		InetAddress clientIP = InetAddress.getByName("127.0.0.1");
+		//InetAddress는 생성자가 없고 메소드가 static임	//IOException 발생
+		
+		//4.전송할 메세지 데이터 준비
+		String message = "이것은 스팸메세지 입니다.";
+		byte[] sendMsg = message.getBytes();//전송할 메세지를 byte배열로 변환
+		
+		//5.메세지 담을 객체 생성
+		DatagramPacket packet = new DatagramPacket(sendMsg,0,sendMsg.length,clientIP,port);
+									//보낼 바이트배열,몇번인덱스부터,어디까지,clientIP,port번호
+		
+		//6.패킷을 전송함
+		userver.send(packet);
+		
+		//7. 소켓닫기
+		userver.close();
+	}
+	
+	public static void main(String[] args) throws IOException {
+		//SocketException을 JVM에 넘김
+		
+		// udp 패킷 전송용 프로그램
+		udpSender();
+		System.out.println("스팸 전송 끝....");
+
+	}
+	
+
+}
+
+
+package udp.practice;
+import java.net.*;
+import java.io.*;
+public class UDPSpamSender {
+	//192.168.30.* 
+	//무작위로 10개의 ip에 
+	//스팸 메세지를 전송하는 프로그램 작성
+	public static void sender() {
+		int port = 4000;
+		try {
+			DatagramSocket ds = new DatagramSocket();
+			String[] ip = new String[10];
+			for(int i=0; i<ip.length;i++) {
+				ip[i]=String.valueOf((int)(Math.random()*255)+1);
+				InetAddress inet = InetAddress.getByName("192.168.30."+ip[i]);
+				
+				String msg = "Hi...";
+				byte[] message = msg.getBytes();
+				
+				DatagramPacket dp = new DatagramPacket(message,message.length,inet,port);
+				
+				ds.send(dp);
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public static void main(String[] args) {
+		sender();
+
+	}
+
+}
+package udp.practice;
+
+import java.io.*;
+import java.net.*;
+
+public class UDPSpamReciever {
+	// 무작위로 전송된 스팸메세지 받아서 출력하는 프로그램
+	// 무한루프로 전송은 패킷 정보를 계속 받아 출력하는 프로그램
+	public static void reciever() {
+		int port = 4000;
+		byte[] msg = new byte[1024];
+		try {
+			DatagramSocket ds = new DatagramSocket(8001);
+
+			DatagramPacket dp = new DatagramPacket(msg, 1024);
+			while (true) {
+				ds.receive(dp);
+				String ip = dp.getAddress().getHostAddress();
+				String message = new String(msg);
+				System.out.println(ip+"로부터 받은 메세지 : " + message);
+				//ds.close();
+			}
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static void main(String[] args) {
+		reciever();
+
+	}
+
+}
+
+package udp.practice;
+
+import java.net.*;
+import java.io.*;
+
+public class UDPSpamReciever {
+	//무작위로 전송된 스팸메세지 받아서
+	//출력하는 프로그램
+	//무한루프로 전송온 패킷 정보를
+	//계속 받아 출력하는 프로그램임.
+	public static void reciever() {
+		try {
+			DatagramSocket reciever = 
+					new DatagramSocket(4000);
+			DatagramPacket packet = null;
+			
+			byte[] recieveMessage = new byte[1024];
+			
+			while(true){
+				packet = new DatagramPacket(recieveMessage, 
+						recieveMessage.length);
+				reciever.receive(packet);
+				System.out.println(
+						packet.getAddress().getHostAddress() + 
+						" 가 보낸 스팸 : " + 
+						new String(packet.getData()));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void main(String[] args) {
+		reciever();
+	}
+
+}
+
+package udp.practice;
+
+import java.net.*;
+import java.io.*;
+import java.util.*;
+
+public class UDPSpamSender {
+	//192.168.30.* 
+	//무작위로 10개의 ip 에
+	//스팸 메세지를 전송하는 프로그램 작성
+	public static void sender() {
+		String[] ip = new String[10];
+		
+		for(int i = 0; i < ip.length; i++)
+			ip[i] = "192.168.30." + (new Random().nextInt(40) + 38);
+
+		try {
+			DatagramSocket sender = new DatagramSocket(4000);
+			DatagramPacket packet = null;
+			
+			String spam = InetAddress.getLocalHost().getHostName() + 
+					" 이 보낸 스팸입니다...ㅎㅎ";
+			byte[] spamMessage = spam.getBytes();
+			
+			for(int i = 0; i < ip.length; i++){
+				packet = new DatagramPacket(spamMessage, 
+						spamMessage.length, InetAddress.getByName(ip[i]),
+						4000);
+				sender.receive(packet);
+				System.out.println(ip[i] + "로 보냄...");
+			}
+			
+			sender.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void main(String[] args) {
+		sender();
+
+	}
+
+}
+
+
+package test.frame;
+
+import javax.swing.*;
+import java.awt.*;//보통 스윙을 쓰지만 awt도 쓰기 때문에 같이 import
+
+//윈동우 창을 구성할 첫번째 방법
+//실행용 클래스가 JFrame을 상속받는 경우
+
+public class FirstFrame extends JFrame{
+	//상속 받으면 JFrame클래스의 메소드 사용할 수 있음
+	public FirstFrame() {
+		this.setTitle("첫번째 gui 애플리케이션");//타이틀 바에 보여질 프로그램 이름
+		this.setLocation(100, 100);//윈도우창 왼쪽 위 코너 기준 좌표
+		this.setSize(600, 350);//창의 가로 세로 픽셀(해상도 기준)
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);//창 닫기를 눌렀을 때 하는 행동
+		
+		
+		//모든 창의 컴포넌트 구성과 배치가 끝나면, 맨 마지막에 사용해야 함
+		this.setVisible(true);//창을 보이게 함 true면 보이고 false면 안 보임
+	}
+	
+	public static void main(String[] args) {
+		new FirstFrame();
+
+	}
+
+}
+
+package test.frame;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class MainFrame extends JFrame{//많이 사용하는 방식 
+	public MainFrame() {
+		super("두번째 프레임 애플리케이션");
+		this.setBounds(0,0,400,300);//위치와 크기를 한번에 지정
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		//닫히게 해라 DIPOSE는 메모리에서도 아예 종료
+		
+		this.setVisible(true);
+	}
+	
+}
+package test.frame;
+
+public class SecondFrame {
+
+	public static void main(String[] args) {
+		// MainFrame 실행시킴
+		new MainFrame();
+
+	}
+
+}
+
+package test.frame;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class ThirdFrame {
+
+	public static void main(String[] args) {
+		// 상속을 받지 않고 직접 JFrame 객체 생성
+		JFrame mainFrame = new JFrame("세번째 프레임 애플리케이션");
+		//생성자 생성할 때 title명
+		mainFrame.setBounds(new Rectangle(0,0,400,300));//Rectangle에 별도로 설정 가능
+		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//상수필드라서 JFrame.
+		
+		mainFrame.setVisible(true);
+	}
+
+}
+
+package test.layout;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class BorderLayoutSample extends JFrame {
+	//Field
+	private JButton eastBtn, westBtn, southBtn, northBtn, centerBtn;
+	
+	public BorderLayoutSample() {
+		super("BorderLayout Test");
+		this.setBounds(new Rectangle(0,0,400,400));
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		//컴포넌트에 대한 배치방식 지정
+		//프레임의 기본레이아웃은 BorderLayout 임.
+		//this.setLayout(new BorderLayout());
+		//BorderLayout은 각 구역별로 컴포넌트 한 개씩만 배치할 수 있음.
+		//컴포넌트의 크기도 지정할 수 없음. 구역의 크기에 맞춰짐.
+		
+		
+		//컴포넌트 객체 생성
+		eastBtn = new JButton("동쪽버튼");
+		westBtn = new JButton("서쪽버튼");
+		southBtn = new JButton("남쪽버튼");
+		northBtn = new JButton("북쪽버튼");
+		centerBtn = new JButton("가운데버튼");
+		
+		//정해진 배치방식에 따라 각 구역에 컴포넌트 배치함.
+		this.add(eastBtn, BorderLayout.EAST);
+		this.add(westBtn, BorderLayout.WEST);
+		this.add(southBtn, BorderLayout.SOUTH);
+		this.add(northBtn, BorderLayout.NORTH);
+		this.add(centerBtn, BorderLayout.CENTER);
+		
+		this.setVisible(true);
+	}
+}
+
+package test.layout;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class GridLayoutSample extends JFrame{
+	public GridLayoutSample() {
+		super("GridLayout Test");
+		this.setBounds(100,100,400,400);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		this.setLayout(new GridLayout(4,2));
+		//그리드레이아웃으로 컴포넌트 지정 4줄 2칸
+		
+		//컴포넌트 객체 생성하고 배치 처리
+		for(int k = 1; k < 9; k++) {
+			this.add(new JButton(String.valueOf(k)));
+		}
+		
+		this.setVisible(true);
+	}
+}
+
+package test.layout;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class FlowLayoutSample extends JFrame{
+	//Field
+	private JButton okBtn, cancleBtn, backBtn;
+	
+	public FlowLayoutSample() {
+		super("FlowLayout Test");
+		this.setBounds(100,100,400,300);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		this.setLayout(new FlowLayout());
+		//컴포넌트들을 가운데 정렬하면서 추가
+		//컴포넌트의 기본 크기를 유지함
+		//기본 정렬방향은 왼쪽에서 오른쪽으로 추가됨.
+		//한 줄을 초과하면 자동 두 번째 줄에 배치 됨.
+		
+		okBtn = new JButton("확인");
+		cancleBtn = new JButton("취소");
+		backBtn = new JButton("뒤로");
+		
+		this.add(okBtn);
+		this.add(cancleBtn);
+		this.add(backBtn);
+		
+		this.setVisible(true);
+	}
+}
+
+package test.layout;
+
+public class TestLayout {
+
+	public static void main(String[] args) {
+		// 레이아웃 테스트
+		//new BorderLayoutSample();
+		//new GridLayoutSample();
+		new FlowLayoutSample();
+	}
+
+}
+
+package test.event;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.event.*;
+
+public class MainFrame extends JFrame implements ActionListener{
+	//Field
+	private JButton btn1, btn2, btn3, btn4, btn5;
+	
+	//Constructor
+	public MainFrame() {
+		super("이벤트 처리 테스트");
+		this.setBounds(100,100,800,500);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setLayout(new FlowLayout());
+		
+		btn1 = new JButton("별도의 이벤트 핸들러 구동");
+		
+		
+		//컴포넌트에 이벤트 설정함
+		//컴포넌트레퍼런스.add이벤트Listener(이벤트핸들러);
+		//해당 이벤트 동작이 발생했을 때 동작처리를 담당할 클래스를 이벤트 핸들러라고 함.
+		btn1.addActionListener(new ActionHandler(this));
+		
+		btn2 = new JButton("내부클래스로 이벤트 처리");
+		btn2.addActionListener(new InActionHandler());
+		
+		btn3 = new JButton("프레임이 이벤트핸들러가 됨.");
+		btn3.addActionListener(this);
+		
+		btn4 = new JButton("익명클래스로 이벤트처리");
+		btn4.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// btn4 클릭했을 때의 동작처리
+				JOptionPane.showMessageDialog(getParent(), e.getActionCommand()+" 버튼 눌렀음");
+				
+			}});
+		
+		btn5 = new JButton("java.beans.EventHandle 클래스 사용");
+		btn5.addActionListener((ActionListener)java.beans.EventHandler.create(ActionListener.class, this, "showDlg"));
+		//(이벤트 핸들러에 사용되는 클래스).class , 현재 프레임정보, (String형)메소드명)this는 showDlg 메소드를 실행시켜라.
+		//ActionListener가 발생했을 때 메소드가 실행
+		//많이 쓰는 방식은 아님.
+		
+		this.add(btn1);
+		this.add(btn2);
+		this.add(btn3);
+		this.add(btn4);
+		this.add(btn5);
+		
+		this.setVisible(true);
+	}
+	
+	//내부(Inner | Newsted) 클래스로 이벤트핸들러 클래스 작성
+	//내부클래스는 클래의 멤버가 됨.
+	//4가지 접근제한자와 static을 사용가능
+	private class InActionHandler implements ActionListener{
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			//btn2를 클릭했을 때의 동작처리//내부클래스로 이벤트 처리
+			JOptionPane.showMessageDialog(getParent(), e.getActionCommand()+" 버튼 클릭함.");
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// btn3을 클릭했을 때의 동작처리
+		//프레임이 이벤트 핸들러가 됨.implements ActionListener
+		JOptionPane.showMessageDialog(this, e.getActionCommand()+"버튼클릭함");
+		
+	}
+	
+	//EventHandler에 의해 실행될 메소드
+	public void showDlg() {
+		JOptionPane.showMessageDialog(this, btn5.getText()+" 버튼 클릭하였음");
+	}
+}
+
+package test.event;
+
+import java.awt.event.*;
+import javax.swing.*;
+
+//이벤트 동작처리를 담당할 이벤트핸들러 클래스는
+//반드시 해당 이벤트에 대한 인터페이스나 어댑터 클래스를 상속받아야 함.
+
+public class ActionHandler implements ActionListener{
+	//Field
+	private MainFrame parent;
+	
+	public ActionHandler(MainFrame parent) {
+		this.parent=parent;//MainFrame에 있는 new ActionHandler(this)
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// MainFrame의 btn1이 클릭되었을 때의 동작처리
+		JOptionPane.showMessageDialog(parent, e.getActionCommand()+" 버튼 클릭하였음.", "버튼클릭", JOptionPane.INFORMATION_MESSAGE);
+		
+	}
+	
+}
+
+package test.event;
+
+public class Run {
+
+	public static void main(String[] args) {
+		// 이벤트 처리 테스트
+		new MainFrame();
+	}
+
+}
