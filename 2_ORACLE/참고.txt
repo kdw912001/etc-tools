@@ -24,3 +24,8 @@ ID와 PASSword는 대소문자 구분 그 외는 대소문자 구분X
 권한 부여시 student 계정을 만든 계정(즉 system)에서 권한 부여해야 함.
 
 
+hr계정은 # 실습스크립트 폴더 안에 실습용_스크립트
+
+sql developer에 들어가서 관리자 계정, hr계정, 수업용계정(student) 만듦
+관리자 계정에 homework계정 create, grant로 만듦
+homework 계정에서 -열기-과제폴더에 workbook_script 그 이후 스크립트실행(F5)
